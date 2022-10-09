@@ -63,7 +63,7 @@ userSchema.pre('save', async function (next) {
 });
 
 // Security | Compare Password
-userSchema.method('checkPasword', async function (formPassword: string) {
+userSchema.method('checkPassword', async function (formPassword: string) {
   return await bcrypt.compare(formPassword, this.password);
 });
 

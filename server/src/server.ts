@@ -1,4 +1,5 @@
-import https from 'https';
+import http from 'http';
+import { connectDB } from './config';
 import app from './app';
 
 // enviroment viarbles
@@ -9,9 +10,17 @@ dotenv.config();
 const PORT = process.env.PORT || 8000;
 
 // server https
-const server = https.createServer(app);
+const server = http.createServer(app);
 
-// listening
-server.listen(PORT, () => {
-  console.log(`Set connection in PORT: ${PORT}`);
-});
+// start server
+async function startServer() {
+  // database connection
+  await connectDB();
+
+  // listening
+  server.listen(PORT, () => {
+    console.log(`Listening in PORT: ${PORT}`);
+  });
+}
+
+startServer();

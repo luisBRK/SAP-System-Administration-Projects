@@ -1,2 +1,2 @@
 export * from './service.interface';
-export * from './user-login.interface';
+export * from './user-auth.interface';
