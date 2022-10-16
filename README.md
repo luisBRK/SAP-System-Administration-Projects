@@ -1,4 +1,4 @@
-# Full Stack JavcaScript(TypeScript) project | TravelLAN
+# Full Stack JavcaScript(TypeScript) project | SAP
 
 It is a complete full stack project using Typescript, in the frontend we will have ```Js && React && Redux``` and for the Backend ```Js  &&  Node && Express```
 
