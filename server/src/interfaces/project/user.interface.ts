@@ -9,7 +9,6 @@ export interface userI {
   phone: number;
   token: string;
   confirmed: boolean;
-  direction: string;
 }
 
 export interface userMethodsI {

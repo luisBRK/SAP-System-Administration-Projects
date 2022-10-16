@@ -41,7 +41,6 @@ export const recoverPassword = async (req: Request, res: Response) => {
 export const checkToken = async (req: Request, res: Response) => {
   try {
     const response = await authService.checkToken(req.params.token);
-
     sendResponse({ res, response });
   } catch (error) {
     console.log(error);

@@ -1,7 +1,5 @@
 import { User } from '../models';
-
 import { userI } from '../interfaces/project';
-
 import {
   serviceInterface,
   signupUserI,
@@ -11,7 +9,6 @@ import {
   checkTokenI,
   newPasswordI,
 } from '../interfaces/system';
-
 import { tokenGenerator, jWTGenerator } from './token-generator.service';
 
 export async function signup(userData: userI): Promise<serviceInterface<signupUserI>> {
@@ -29,12 +26,12 @@ export async function signup(userData: userI): Promise<serviceInterface<signupUs
     newUser.token = await tokenGenerator();
     const savedUser = await newUser.save();
 
-    if (savedUser) {
-      const msg = 'Registered complete, check your email to confirm your account';
-      return { status: 201, result: { email: savedUser.email, message: msg } };
-    } else {
+    if (!savedUser) {
       return { status: 400, error: 'REGISTRATION_ERROR' };
     }
+
+    const msg = 'Registered complete, check your email to confirm your account';
+    return { status: 201, result: { email: savedUser.email, message: msg } };
   } catch (error) {
     throw error;
   }
@@ -64,8 +61,10 @@ export async function login(email: string, password: string): Promise<serviceInt
       phone: user.phone,
       jwtoken: jWTGenerator(user._id.toString()),
     };
+
     return { status: 200, result: { dataUser: userData } };
   } catch (error) {
+    return { status: 400, error: 'SERVER_CONFLICT_ERROR' };
     throw error;
   }
 }
@@ -81,11 +80,10 @@ export async function confirmUser(token: string): Promise<serviceInterface<confi
     userToConfirm.confirmed = true;
     userToConfirm.token = '';
     await userToConfirm.save();
-    const message = 'User confirmed successfully';
 
+    const message = 'User confirmed successfully';
     return { status: 200, result: { message: message } };
   } catch (error) {
-    // return { status: 500, error: 'SERVER_CONFLICT_ERROR' };
     throw error;
   }
 }
@@ -101,7 +99,6 @@ export async function recoverPassword(email: string): Promise<serviceInterface<r
     await user.save();
 
     const message = 'We have sent an email with the instructions, check your inbox';
-
     return { status: 200, result: { message: message } };
   } catch (error) {
     throw error;
@@ -135,8 +132,8 @@ export async function newPassword(token: string, password: string): Promise<serv
     validUserToken.password = password;
 
     validUserToken.save();
-    const message = 'Your password has changed successfully';
 
+    const message = 'Your password has changed successfully';
     return { status: 200, result: { message: message } };
   } catch (error) {
     throw error;

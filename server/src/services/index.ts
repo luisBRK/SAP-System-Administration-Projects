@@ -1,3 +1,8 @@
+export * from './token-generator.service';
+export * from './auth-logged.service';
+
 import * as authService from './auth.service';
 export { authService };
-export * from './token-generator.service';
+
+import * as projectService from './project.service';
+export { projectService };
