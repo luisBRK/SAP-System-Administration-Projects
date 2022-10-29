@@ -7,14 +7,12 @@ import { checkAuthLogged } from '../services';
 const taskRouter = express.Router();
 
 // routes
-taskRouter.post('/', checkAuthLogged, taskController.newTask);
+taskRouter.route('/').post(checkAuthLogged, taskController.newTask);
 
 taskRouter
   .route('/:taskId')
-  .get(checkAuthLogged, taskController.getTask)
-  .post(checkAuthLogged, taskController.updateTask)
-  .delete(checkAuthLogged, taskController.delete);
-
-taskRouter.post('/state/:taskId', taskController.changeTaskState);
+  .get(checkAuthLogged, taskController.getOneTask)
+  .put(checkAuthLogged, taskController.updateTask)
+  .delete(checkAuthLogged, taskController.deleteTask);
 
 export default taskRouter;

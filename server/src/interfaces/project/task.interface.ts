@@ -1,13 +1,16 @@
 import { ObjectId } from 'mongoose';
 
+type state = 'to-do' | 'in-progress' | 'done';
+type priority = 'low' | 'medium' | 'high';
+
 export interface taskI {
   _id: ObjectId;
   name: string;
   description: string;
-  state: string;
+  state: state;
   dateDelivery: Date;
-  priority: string;
+  priority: priority;
   project: ObjectId;
-  takedBy: ObjectId;
-  completedBy: ObjectId;
+  takedBy: ObjectId | null;
+  completedBy: ObjectId | null;
 }

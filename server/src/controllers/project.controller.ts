@@ -5,8 +5,12 @@ import { projectService } from '../services';
 import { sendResponse } from '../utils';
 
 export const newProject = async (req: customReq, res: Response) => {
-  const response = await projectService.newProject(req.body, req.user as userI);
-  sendResponse({ res, response });
+  try {
+    const response = await projectService.newProject(req.body, req.user as userI);
+    sendResponse({ res, response });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const getAllProjects = async (req: customReq, res: Response) => {
@@ -45,6 +49,8 @@ export const deleteProject = async (req: customReq, res: Response) => {
   }
 };
 
-// export const searchCollaborator = async (req: customReq, res: Response) => {};
-// export const addCollaborator = async (req: customReq, res: Response) => {};
-// export const deleteCollaborator = async (req: customReq, res: Response) => {};
+// TODO export const searchCollaborator = async (req: customReq, res: Response) => {};
+
+// TODO export const addCollaborator = async (req: customReq, res: Response) => {};
+
+// TODO export const deleteCollaborator = async (req: customReq, res: Response) => {};

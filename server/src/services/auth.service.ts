@@ -1,14 +1,6 @@
 import { User } from '../models';
 import { userI } from '../interfaces/project';
-import {
-  serviceInterface,
-  signupUserI,
-  loginUserI,
-  confirmUserI,
-  recoverPasswordI,
-  checkTokenI,
-  newPasswordI,
-} from '../interfaces/system';
+import { serviceInterface, signupUserI, loginUserI, getMessageI } from '../interfaces/system';
 import { tokenGenerator, jWTGenerator } from './token-generator.service';
 
 export async function signup(userData: userI): Promise<serviceInterface<signupUserI>> {
@@ -69,7 +61,7 @@ export async function login(email: string, password: string): Promise<serviceInt
   }
 }
 
-export async function confirmUser(token: string): Promise<serviceInterface<confirmUserI>> {
+export async function confirmUser(token: string): Promise<serviceInterface<getMessageI>> {
   try {
     const userToConfirm = await User.findOne({ token: token });
 
@@ -88,7 +80,7 @@ export async function confirmUser(token: string): Promise<serviceInterface<confi
   }
 }
 
-export async function recoverPassword(email: string): Promise<serviceInterface<recoverPasswordI>> {
+export async function recoverPassword(email: string): Promise<serviceInterface<getMessageI>> {
   try {
     const user = await User.findOne({ email: email });
 
@@ -105,7 +97,7 @@ export async function recoverPassword(email: string): Promise<serviceInterface<r
   }
 }
 
-export async function checkToken(token: string): Promise<serviceInterface<checkTokenI>> {
+export async function checkToken(token: string): Promise<serviceInterface<getMessageI>> {
   try {
     const validUserToken = await User.findOne({ token: token });
 
@@ -120,7 +112,7 @@ export async function checkToken(token: string): Promise<serviceInterface<checkT
   }
 }
 
-export async function newPassword(token: string, password: string): Promise<serviceInterface<newPasswordI>> {
+export async function newPassword(token: string, password: string): Promise<serviceInterface<getMessageI>> {
   try {
     const validUserToken = await User.findOne({ token: token });
 

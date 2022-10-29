@@ -6,3 +6,5 @@ export { authService };
 
 import * as projectService from './project.service';
 export { projectService };
+
+export * as taskService from './task.service';

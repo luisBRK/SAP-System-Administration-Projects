@@ -1,13 +1,6 @@
 import { Project, User } from '../models';
 import { projectI, userI } from '../interfaces/project';
-import {
-  serviceInterface,
-  newProjectI,
-  getAllProjectsI,
-  getOneProjectI,
-  editProjectI,
-  deleteProjectI,
-} from '../interfaces/system';
+import { serviceInterface, newProjectI, getAllProjectsI, getDataProjectI, getMessageI } from '../interfaces/system';
 
 export async function newProject(projectData: projectI, userData: userI): Promise<serviceInterface<newProjectI>> {
   const user = await User.findById(userData._id);
@@ -34,6 +27,7 @@ export async function getAllProjects(userData: userI): Promise<serviceInterface<
   }
 
   try {
+    // TODO: return collabs
     const projects = await Project.find().where('creator').equals(user);
     return { status: 200, result: { projectsList: projects } };
   } catch (event) {
@@ -42,22 +36,29 @@ export async function getAllProjects(userData: userI): Promise<serviceInterface<
   }
 }
 
-export async function getOneProject(projectId: string, userData: userI): Promise<serviceInterface<getOneProjectI>> {
+export async function getOneProject(projectId: string, userData: userI): Promise<serviceInterface<getDataProjectI>> {
+  if (!projectId.match(/^[0-9a-fA-F]{24}$/)) {
+    return { status: 404, error: 'INVALID_ID' };
+  }
+
   const user = await User.findById(userData._id);
   if (!user) {
     return { status: 403, error: 'ACCES_DENIED' };
   }
 
-  if (!projectId.match(/^[0-9a-fA-F]{24}$/)) {
-    return { status: 404, error: 'INVALID_TOKEN' };
-  }
-
   try {
-    const project = await Project.findById(projectId);
+    const project = await Project.findById(projectId).populate({
+      path: 'tasks',
+      populate: [
+        { path: 'takedBy', model: 'User', select: 'name' },
+        { path: 'completedBy', model: 'User', select: 'name' },
+      ],
+    });
     if (!project) {
       return { status: 404, error: 'PROJECT_NOT_FOUND' };
     }
 
+    // TODO: collabs id = user session id??
     if (project.creator.toString() !== userData._id.toString()) {
       return { status: 403, error: 'ACCES_DENIED' };
     }
@@ -73,14 +74,14 @@ export async function editProject(
   projectId: string,
   projectData: projectI,
   userData: userI
-): Promise<serviceInterface<editProjectI>> {
+): Promise<serviceInterface<getDataProjectI>> {
+  if (!projectId.match(/^[0-9a-fA-F]{24}$/)) {
+    return { status: 404, error: 'INVALID_ID' };
+  }
+
   const user = await User.findById(userData._id);
   if (!user) {
     return { status: 403, error: 'ACCES_DENIED' };
-  }
-
-  if (!projectId.match(/^[0-9a-fA-F]{24}$/)) {
-    return { status: 404, error: 'INVALID_TOKEN' };
   }
 
   const project = await Project.findById(projectId.trim());
@@ -106,14 +107,14 @@ export async function editProject(
   }
 }
 
-export async function deleteProject(projectId: string, userData: userI): Promise<serviceInterface<deleteProjectI>> {
+export async function deleteProject(projectId: string, userData: userI): Promise<serviceInterface<getMessageI>> {
+  if (!projectId.match(/^[0-9a-fA-F]{24}$/)) {
+    return { status: 404, error: 'INVALID_ID' };
+  }
+
   const user = await User.findById(userData._id);
   if (!user) {
     return { status: 403, error: 'ACCES_DENIED' };
-  }
-
-  if (!projectId.match(/^[0-9a-fA-F]{24}$/)) {
-    return { status: 404, error: 'INVALID_TOKEN' };
   }
 
   const project = await Project.findById(projectId.trim());

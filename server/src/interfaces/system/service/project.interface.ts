@@ -8,14 +8,6 @@ export interface getAllProjectsI {
   projectsList: Array<projectI>;
 }
 
-export interface getOneProjectI {
+export interface getDataProjectI {
   project: projectI;
-}
-
-export interface editProjectI {
-  project: projectI;
-}
-
-export interface deleteProjectI {
-  message: string;
 }

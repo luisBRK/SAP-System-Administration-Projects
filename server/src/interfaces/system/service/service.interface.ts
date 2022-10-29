@@ -8,3 +8,7 @@ export interface serviceInterface<T> {
   result?: T;
   error?: serverMessageInterface;
 }
+
+export interface getMessageI {
+  message: string;
+}
