@@ -4,13 +4,11 @@ import { Project, Task, User } from '../models';
 
 export async function newTask(taskData: taskI, userData: userI): Promise<serviceInterface<getDataTaskI>> {
   const user = await User.findById(userData._id);
-  console.log('user', user);
   if (!user) {
     return { status: 403, error: 'ACCES_DENIED' };
   }
 
   const projectVerify = await Project.findById(taskData.project);
-  console.log('projectverify', projectVerify);
   if (!projectVerify) {
     return { status: 404, error: 'PROJECT_NOT_FOUND' };
   }
@@ -86,8 +84,10 @@ export async function updateTask(
     return { status: 404, error: 'TASK_NOT_FOUND' };
   }
 
-  // TODO: collabs id = user session id??
-  if (projectVerify.creator.toString() !== userData._id.toString()) {
+  if (
+    projectVerify.creator.toString() !== userData._id.toString() &&
+    !projectVerify.collaborators.some((collabId) => collabId.toString() === userData._id.toString())
+  ) {
     return { status: 403, error: 'ACCES_DENIED' };
   }
 
@@ -148,7 +148,7 @@ export async function deleteTask(taskId: string, userData: userI): Promise<servi
 
   try {
     const taskIndex = projectVerify.tasks.indexOf(task._id);
-    if (taskIndex > 1) {
+    if (taskIndex > -1) {
       projectVerify.tasks.splice(taskIndex, 1);
     }
 

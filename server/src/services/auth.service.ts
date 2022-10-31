@@ -1,7 +1,8 @@
 import { User } from '../models';
+import { signupEmail, recoverPasswordEmail } from './smtp.service';
+import { tokenGenerator, jWTGenerator } from './token-generator.service';
 import { userI } from '../interfaces/project';
 import { serviceInterface, signupUserI, loginUserI, getMessageI } from '../interfaces/system';
-import { tokenGenerator, jWTGenerator } from './token-generator.service';
 
 export async function signup(userData: userI): Promise<serviceInterface<signupUserI>> {
   try {
@@ -21,6 +22,13 @@ export async function signup(userData: userI): Promise<serviceInterface<signupUs
     if (!savedUser) {
       return { status: 400, error: 'REGISTRATION_ERROR' };
     }
+
+    signupEmail({
+      name: newUser.name,
+      lastname: newUser.lastname,
+      email: newUser.email,
+      token: newUser.token,
+    } as userI);
 
     const msg = 'Registered complete, check your email to confirm your account';
     return { status: 201, result: { email: savedUser.email, message: msg } };
@@ -88,7 +96,15 @@ export async function recoverPassword(email: string): Promise<serviceInterface<g
       return { status: 400, error: 'EMAIL_NOT_EXIST' };
     }
     user.token = tokenGenerator();
+
     await user.save();
+
+    recoverPasswordEmail({
+      name: user.name,
+      lastname: user.lastname,
+      email: user.email,
+      token: user.token,
+    } as userI);
 
     const message = 'We have sent an email with the instructions, check your inbox';
     return { status: 200, result: { message: message } };

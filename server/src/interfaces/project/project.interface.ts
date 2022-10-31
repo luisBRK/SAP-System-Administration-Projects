@@ -9,5 +9,5 @@ export interface projectI {
   client: string;
   creator: ObjectId;
   tasks: Array<ObjectId>;
-  collaboratos: Array<ObjectId>;
+  collaborators: Array<ObjectId>;
 }

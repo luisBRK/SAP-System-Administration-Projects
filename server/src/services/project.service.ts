@@ -58,8 +58,10 @@ export async function getOneProject(projectId: string, userData: userI): Promise
       return { status: 404, error: 'PROJECT_NOT_FOUND' };
     }
 
-    // TODO: collabs id = user session id??
-    if (project.creator.toString() !== userData._id.toString()) {
+    if (
+      project.creator.toString() !== userData._id.toString() &&
+      !project.collaborators.some((collabId) => collabId.toString() === userData._id.toString())
+    ) {
       return { status: 403, error: 'ACCES_DENIED' };
     }
 

@@ -1,10 +1,9 @@
 export * from './token-generator.service';
 export * from './auth-logged.service';
 
-import * as authService from './auth.service';
-export { authService };
-
-import * as projectService from './project.service';
-export { projectService };
-
+export * as authService from './auth.service';
+export * as projectService from './project.service';
 export * as taskService from './task.service';
+export * as collaboratorService from './collaborator.service';
+
+export * as smtpService from './smtp.service';

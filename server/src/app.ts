@@ -1,5 +1,5 @@
 import express from 'express';
-import { userRouter, projectRouter, taskRouter } from './routes';
+import { userRouter, projectRouter, taskRouter, collaboratorRouter } from './routes';
 
 // set app express
 const app = express();
@@ -11,5 +11,6 @@ app.use(express.json());
 app.use('/api/users', userRouter);
 app.use('/api/projects', projectRouter);
 app.use('/api/tasks', taskRouter);
+app.use('/api/collaborators', collaboratorRouter);
 
 export default app;

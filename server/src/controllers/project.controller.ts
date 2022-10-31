@@ -48,9 +48,3 @@ export const deleteProject = async (req: customReq, res: Response) => {
     console.log(error);
   }
 };
-
-// TODO export const searchCollaborator = async (req: customReq, res: Response) => {};
-
-// TODO export const addCollaborator = async (req: customReq, res: Response) => {};
-
-// TODO export const deleteCollaborator = async (req: customReq, res: Response) => {};

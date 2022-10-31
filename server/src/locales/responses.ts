@@ -10,6 +10,9 @@ export const englishResponses = {
 
   PROJECT_NOT_FOUND: 'This project was not found',
   TASK_NOT_FOUND: 'This task was not found',
+  COLLAB_NOT_FOUND: "We can't find any user with this email",
+  COLLAB_NOT_BE_ADMIN: "A project creator can't be a collaborator",
+  COLLAB_ADDED: 'This user is already a collaborator in this project',
 
   SERVER_CONFLICT_ERROR: 'Something went wrong, the server cannot process this request at this time',
 };

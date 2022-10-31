@@ -40,7 +40,7 @@ const projectSchema = new Schema<projectI, projectModel>(
         ref: 'Task',
       },
     ],
-    collaboratos: [
+    collaborators: [
       {
         type: Schema.Types.ObjectId,
         ref: 'User',
