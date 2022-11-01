@@ -1,0 +1,22 @@
+.auth-layout-container {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+
+  .image-auth {
+    width: 45%;
+    object-fit: cover;
+    height: 100%;
+  }
+  .auth-content {
+    background-color: #e7e5e4;
+    flex-grow: 1;
+    padding: 10px;
+
+    &__header {
+      span {
+        font-size: 14px;
+      }
+    }
+  }
+}
