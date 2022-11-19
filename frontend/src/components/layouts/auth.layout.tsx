@@ -1,7 +1,7 @@
 import { FC, Fragment } from 'react';
 import { Outlet } from 'react-router-dom';
 
-import './auth.styles.scss';
+import { AuthLayoutContainer, ImageAuth, AuthContent, HeaderContent, BodyContent } from './auth.styles';
 
 import authBackground from '../../img/auth-background-01.jpg';
 
@@ -12,18 +12,20 @@ interface Props {
 export const AuthLayout: FC<Props> = () => {
   return (
     <Fragment>
-      <div className='auth-layout-container'>
-        <img className='image-auth' src={authBackground} alt='side auth' />
+      <AuthLayoutContainer>
+        <ImageAuth src={authBackground} alt='side auth' />
 
-        <div className='auth-content'>
-          <div className='auth-content__header'>
+        <AuthContent>
+          <HeaderContent>
             <h1>SAP</h1>
             <span>System Administration Projects</span>
-          </div>
+          </HeaderContent>
 
-          <Outlet />
-        </div>
-      </div>
+          <BodyContent>
+            <Outlet />
+          </BodyContent>
+        </AuthContent>
+      </AuthLayoutContainer>
     </Fragment>
   );
 };
